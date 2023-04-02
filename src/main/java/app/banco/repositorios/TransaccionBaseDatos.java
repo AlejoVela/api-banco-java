@@ -134,7 +134,7 @@ public class TransaccionBaseDatos implements RepositorioCRUD {
             PreparedStatement sentenciaEliminarTransacciones = conexion.prepareStatement(sentenciaEliminarTransaccionsSql);
 
             sentenciaEliminarTransacciones.setInt(1, transaccionAEliminar.getId());
-            sentenciaEliminarTransacciones.executeQuery();
+            sentenciaEliminarTransacciones.executeUpdate();
 
             return "transaccion Eliminada";
 

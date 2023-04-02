@@ -23,7 +23,6 @@ public class CuentaAhorro extends CuentaBancaria {
     @Override
     public double retirar(double retiroDinero) {
         if (retiroDinero < this.saldo) {
-            System.out.println("Por favor espere mientras se realiza la transacción");
             if (this.numeroRetiros > 3) {
                 double retiroMasComision = (retiroDinero + (retiroDinero*1)/100);
                 if(retiroMasComision < this.saldo){
@@ -43,7 +42,21 @@ public class CuentaAhorro extends CuentaBancaria {
 
     @Override
     public void transferir(String cuentaDestino, double cantidadATransferir) {
+        double cobroAdicional = 0, cantidadRealARestar = cantidadATransferir;
 
+        if(!this.getTipoCuenta().equals(cuentaDestino)){
+            cobroAdicional += (cantidadATransferir*1.5)/100;
+            cantidadATransferir += cobroAdicional;
+
+            transferenciasACuentaCorriente++;
+        } else {
+            transferenciasACuentaDeAhorro++;
+        }
+        if(cantidadRealARestar > this.getSaldo()){
+            throw new IllegalArgumentException("No se puede realziar la operación, porque la cantida a transferir es mayor al saldo de la cuenta");
+        } else {
+            this.saldo -= cantidadATransferir;
+        }
     }
 
     @Override

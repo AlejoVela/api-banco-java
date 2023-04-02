@@ -32,7 +32,6 @@ public class ControladorUsuario extends HttpServlet {
             try {
                 switch (request.getPathInfo()) {
                     case "/obtener-uno":
-                        // TODO: Validar que el query param sea entero (regex)
                         String cedula = request.getParameter("cedula");
 
                         Usuario usuario = (Usuario)servicioUsuario.ObtenerUno(cedula);

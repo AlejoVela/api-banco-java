@@ -178,14 +178,14 @@ public class CuentaBaseDatos implements RepositorioCRUD {
             PreparedStatement sentenciaEliminarTransacciones = conexion.prepareStatement(sentenciaEliminarTransaccionsSql);
 
             sentenciaEliminarTransacciones.setInt(1, cuentaAEliminar.getId());
-            sentenciaEliminarTransacciones.executeQuery();
+            sentenciaEliminarTransacciones.executeUpdate();
 
             // * Eliminamos las cuentas
             String sentenciaEliminarCuentasSql =
                     "DELETE FROM CUENTAS WHERE ID = ?;";
             PreparedStatement sentenciaEliminarCuentas = conexion.prepareStatement(sentenciaEliminarCuentasSql);
             sentenciaEliminarCuentas.setInt(1, cuentaAEliminar.getId());
-            sentenciaEliminarCuentas.executeQuery();
+            sentenciaEliminarCuentas.executeUpdate();
 
             return "Cuenta Eliminada";
 

@@ -17,7 +17,8 @@ public abstract class CuentaBancaria {
 
     protected int numeroRetiros = 0;
 
-    protected int numeroTransferencias = 0;
+    protected int transferenciasACuentaDeAhorro = 0;
+    protected int transferenciasACuentaCorriente = 0;
 
     public CuentaBancaria(String numeroCuenta, String tipoCuenta, int idUsuario) {
         this.numeroCuenta = numeroCuenta;
@@ -87,13 +88,5 @@ public abstract class CuentaBancaria {
 
     public void setNumeroRetiros(int numeroRetiros) {
         this.numeroRetiros = numeroRetiros;
-    }
-
-    public int getNumeroTransferencias() {
-        return numeroTransferencias;
-    }
-
-    public void setNumeroTransferencias(int numeroTransferencias) {
-        this.numeroTransferencias = numeroTransferencias;
     }
 }

@@ -18,7 +18,6 @@ public class CuentaCorriente extends CuentaBancaria {
     @Override
     public double retirar(double retiroDinero) {
         if (retiroDinero <= this.saldo && this.numeroRetiros <= 5) {
-            System.out.println("Por favor espere mientras se realiza la transacción");
             this.saldo -= retiroDinero;
             numeroRetiros++;
         }else {
@@ -29,7 +28,29 @@ public class CuentaCorriente extends CuentaBancaria {
 
     @Override
     public void transferir(String cuentaDestino, double cantidadATransferir) {
+        double cobroAdicional = 0, cantidadRealARestar = cantidadATransferir;
+        cobroAdicional += (cantidadATransferir*2)/100;
+        cantidadRealARestar += cobroAdicional;
 
+        if(!this.getTipoCuenta().equals(cuentaDestino)) {
+            if(this.transferenciasACuentaDeAhorro < 2) {
+                if(cantidadRealARestar > this.saldo){
+                    throw new IllegalArgumentException("No se puede realziar la operación, porque la cantida a transferir es mayor al saldo de la cuenta");
+                } else {
+                    this.saldo -= cantidadRealARestar;
+                    this.transferenciasACuentaDeAhorro++;
+                }
+            } else {
+                throw new IllegalArgumentException("Solo puedes hacer dos transferias a una cuenta de ahorros");
+            }
+        } else {
+            if(cantidadRealARestar > this.saldo){
+                throw new IllegalArgumentException("No se puede realziar la operación, porque la cantida a transferir es mayor al saldo de la cuenta");
+            } else {
+                this.saldo -= cantidadRealARestar;
+                this.transferenciasACuentaCorriente++;
+            }
+        }
     }
 
     @Override
