@@ -24,7 +24,7 @@ public class App {
 
         server.setHandler(context);
 
-        try{
+        try {
             server.start();
             server.join();
         } catch (Exception e) {

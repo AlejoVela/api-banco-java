@@ -29,6 +29,8 @@ public abstract class CuentaBancaria {
 
     public abstract double retirar(double retiroDinero);
 
+    public abstract void transferir(String cuentaDestino, double cantidadATransferir);
+
     public abstract void imprimirCuentaBancaria();
 
     public int getId() {

@@ -28,6 +28,11 @@ public class CuentaCorriente extends CuentaBancaria {
     }
 
     @Override
+    public void transferir(String cuentaDestino, double cantidadATransferir) {
+
+    }
+
+    @Override
     public void imprimirCuentaBancaria(){
         int numeroTransacciones = this.numeroDepositos + this.numeroRetiros;
         System.out.println("CUENTA CORRIENTE" + "\n" +

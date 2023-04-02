@@ -47,6 +47,31 @@ public class CuentaBaseDatos implements RepositorioCRUD {
     }
 
     @Override
+    public boolean Actualizar(Object id, Object saldo) {
+        try (Connection conexion = DriverManager.getConnection(cadenaConexion)) {
+            double saldoCuenta = (double) saldo;
+
+            String sentenciaSql =
+                    "UPDATE CUENTAS SET SALDO = ? WHERE ID = ?";
+
+            PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
+            sentencia.setDouble(1, saldoCuenta);
+            sentencia.setInt(2, (int) id);
+
+            sentencia.executeUpdate(sentenciaSql);
+
+        } catch (SQLException e) {
+            System.out.println("Error de conexión: " + e);
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error " + e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public Object ObtenerUno(Object numeroCuenta) {
         try (Connection conexion = DriverManager.getConnection(cadenaConexion)) {
             String numeroCuentaAEncontrar = (String) numeroCuenta;

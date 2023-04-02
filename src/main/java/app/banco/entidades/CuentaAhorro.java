@@ -42,6 +42,11 @@ public class CuentaAhorro extends CuentaBancaria {
     }
 
     @Override
+    public void transferir(String cuentaDestino, double cantidadATransferir) {
+
+    }
+
+    @Override
     public void imprimirCuentaBancaria(){
         int numeroTransacciones = this.numeroDepositos + this.numeroRetiros;
         System.out.println("CUENTA DE AHORRO" + "\n" +

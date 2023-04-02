@@ -7,4 +7,5 @@ public interface RepositorioCRUD {
     Object ObtenerUno(Object id);
     List<?> ListarTodos();
     String Eliminar(Object id);
+    boolean Actualizar(Object id, Object data);
 }

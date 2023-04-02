@@ -170,4 +170,9 @@ public class UsuarioBaseDatos implements RepositorioCRUD {
             return "Error " + e.getMessage();
         }
     }
+
+    @Override
+    public boolean Actualizar(Object id, Object data) {
+        return false;
+    }
 }

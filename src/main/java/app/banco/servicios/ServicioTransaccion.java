@@ -1,5 +1,7 @@
 package app.banco.servicios;
 
+import app.banco.entidades.CuentaAhorro;
+import app.banco.entidades.CuentaCorriente;
 import app.banco.entidades.Transaccion;
 import app.banco.entidades.abstractas.CuentaBancaria;
 import app.banco.repositorios.CuentaBaseDatos;
@@ -29,10 +31,21 @@ public class ServicioTransaccion implements Servicio {
         // Validamos los campos
         if(tipoTransaccion == null || tipoTransaccion == "" ||
                 monto <= 0 ||
-                numeroCuenta == null || numeroCuenta == "" ||
-                tipoCuentaDestino == null || tipoCuentaDestino   == "")
+                numeroCuenta == null || numeroCuenta == "")
         {
             throw new RuntimeException("No se enviaron todos los campos");
+        }
+
+        if(!tipoTransaccion.equals("depositar") &&
+                !tipoTransaccion.equals("retirar") &&
+                !tipoTransaccion.equals("transferir"))
+        {
+            throw new RuntimeException("El tipo de transaccion indicado no es valido, deber ser:\n" +
+                    "depositar, retirar o transferir");
+        }
+
+        if(tipoTransaccion.equals("transferencia") && tipoCuentaDestino == null || tipoCuentaDestino   == ""){
+            throw new RuntimeException("Si el tipo de transaccion es transferencia, la cuenta de destino no puede ser nula");
         }
 
         CuentaBancaria cuenta = (CuentaBancaria) repositorioCuenta.ObtenerUno(numeroCuenta);
@@ -42,6 +55,25 @@ public class ServicioTransaccion implements Servicio {
         }
 
         Transaccion transaccion = new Transaccion(tipoTransaccion, monto, cuenta.getId(), tipoCuentaDestino);
+
+        try {
+            if(cuenta.equals("CuentaAhorro")){
+                CuentaAhorro CA = (CuentaAhorro) cuenta;
+                cuenta = doTransactionAhorro(CA, transaccion);
+            } else {
+                CuentaCorriente CC = (CuentaCorriente) cuenta;
+                cuenta = doTransactionCorriente(CC, transaccion);
+            }
+        }
+        catch (Exception e){
+            throw e;
+        }
+
+        boolean saldoActualizado = repositorioCuenta.Actualizar(cuenta.getId(), cuenta.getSaldo());
+
+        if(!saldoActualizado){
+            throw new RuntimeException("Ha ocurrido un error al actualizar el saldo de la cuenta");
+        }
 
         return repositorioTransaccion.Crear(transaccion);
     }
@@ -66,5 +98,35 @@ public class ServicioTransaccion implements Servicio {
         }
 
         return repositorioTransaccion.Eliminar(transaccionAEliminar);
+    }
+
+    public CuentaBancaria doTransactionAhorro(CuentaAhorro cuenta, Transaccion transaccion){
+        switch (transaccion.getTipoCuentaDestino()){
+            case "depositar":
+                cuenta.depositar(transaccion.getMonto());
+                break;
+            case "retirar":
+                cuenta.retirar(transaccion.getMonto());
+                break;
+            case "transferir":
+                cuenta.transferir(transaccion.getTipoCuentaDestino(), transaccion.getMonto());
+                break;
+        }
+        return cuenta;
+    }
+
+    public CuentaBancaria doTransactionCorriente(CuentaCorriente cuenta, Transaccion transaccion){
+        switch (transaccion.getTipoCuentaDestino()){
+            case "depositar":
+                cuenta.depositar(transaccion.getMonto());
+                break;
+            case "retirar":
+                cuenta.retirar(transaccion.getMonto());
+                break;
+            case "transferir":
+                cuenta.transferir(transaccion.getTipoCuentaDestino(), transaccion.getMonto());
+                break;
+        }
+        return cuenta;
     }
 }

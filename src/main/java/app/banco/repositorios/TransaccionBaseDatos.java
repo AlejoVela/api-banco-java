@@ -144,4 +144,9 @@ public class TransaccionBaseDatos implements RepositorioCRUD {
             return "Error " + e.getMessage();
         }
     }
+
+    @Override
+    public boolean Actualizar(Object id, Object data) {
+        return false;
+    }
 }
